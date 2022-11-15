@@ -27,4 +27,21 @@ export class StagiaireTableComponent implements OnInit {
     this.stagiaireService.delete(stagiaire);
   }
 
+  public filterChanged(event: Date | null): void {
+    console.log(`Filter as changed to : ${event}`);
+    this.stopDate = event;
+  }
+
+  public changeView(stagiaire: Stagiaire): boolean {
+    if (this.stopDate === null) {
+      return true;
+    }
+
+    if (this.stopDate.getDate() === 31) {
+      return stagiaire.getBirthDate() > this.stopDate;
+    }
+
+    return stagiaire.getBirthDate() < this.stopDate;
+  }
+
 }

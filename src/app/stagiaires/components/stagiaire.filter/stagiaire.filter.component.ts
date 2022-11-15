@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-stagiaire-filter',
@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class StagiaireFilterComponent implements OnInit {
 
   @Input() public filterDate: Date | null = null;
+  @Output() public onChangeFilter: EventEmitter<Date | null> = new EventEmitter<Date | null>();
 
   private buttonMap: Map<string, boolean> = new Map<string, boolean>();
 
@@ -44,6 +45,15 @@ export class StagiaireFilterComponent implements OnInit {
         this.buttonMap.set(key, false);
       }
     });
+
+    // Now emit the Event...
+    if (button === 'btnAll') {
+      this.onChangeFilter.emit(null);
+    } else if (button === 'btnGT1950') {
+      this.onChangeFilter.emit(new Date(1950, 11, 31));
+    } else {
+      this.onChangeFilter.emit(new Date(1950, 0, 1));
+    }
   }
 
 }
