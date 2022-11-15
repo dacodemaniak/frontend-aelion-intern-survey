@@ -1,0 +1,42 @@
+<app-stagiaire-filter></app-stagiaire-filter>
+
+<table>
+    <thead>
+        <tr><!-- tr : table row-->
+            <th>#</th>
+            <th>Lastname</th>
+            <th>Firstname</th>
+            <th>Birthdate</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <ng-container *ngFor="let stagiaire of stagiaires">
+            <tr *ngIf="(stopDate !== null) ? stagiaire.getBirthDate() > stopDate : true">
+                
+                <td>
+                    {{ stagiaire.getId() }}
+                </td>
+                <td>
+                    {{ stagiaire.getLastName() | uppercase }}
+                </td>
+                <td>
+                    {{ stagiaire.getFirstName() }}
+                </td>
+                <td>
+                    {{ stagiaire.getBirthDate() | date: 'dd-MM-YYYY'}}
+                </td>
+                <td>
+                    <button type="button" (click)="onRemove(stagiaire)">x</button>
+                </td>
+            </tr>
+        </ng-container>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4">Nb. items</td>
+            <td>{{ getVisibleStagiaireNumber()}}</td>
+        </tr>
+    </tfoot>
+</table>
