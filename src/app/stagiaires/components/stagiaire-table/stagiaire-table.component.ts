@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Stagiaire } from 'src/app/core/models/stagiaire';
 import { StagiaireService } from 'src/app/core/services/stagiaire.service';
 
+
 @Component({
   selector: 'app-stagiaire-table',
   templateUrl: './stagiaire-table.component.html',

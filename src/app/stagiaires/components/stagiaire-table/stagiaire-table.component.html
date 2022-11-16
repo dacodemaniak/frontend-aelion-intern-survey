@@ -16,7 +16,7 @@
             <tr *ngIf="changeView(stagiaire)">
                 
                 <td>
-                    {{ stagiaire | initials }} {{ stagiaire.getId() }}
+                    {{ stagiaire | initials: {firstNameFirst: true, full: true} }} {{ stagiaire.getId() }}
                 </td>
                 <td>
                     {{ stagiaire.getLastName() | uppercase }}
@@ -25,7 +25,7 @@
                     {{ stagiaire.getFirstName() }}
                 </td>
                 <td>
-                    {{ stagiaire.getBirthDate() | date: 'dd-MM-YYYY'}}
+                    {{ stagiaire.getBirthDate() | date: 'dd-MM-YYYY' }}
                 </td>
                 <td>
                     <button type="button" (click)="onRemove(stagiaire)">x</button>
