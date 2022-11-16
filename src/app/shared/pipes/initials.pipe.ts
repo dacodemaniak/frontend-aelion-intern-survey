@@ -6,9 +6,11 @@ import { Stagiaire } from 'src/app/core/models/stagiaire';
 })
 export class InitialsPipe implements PipeTransform {
 
-  transform(value: unknown, ...args: unknown[]): unknown {
+  private variant: any;
 
+  transform(value: unknown, ...args: unknown[]): unknown {
     if (value instanceof Stagiaire) {
+      this.variant = args[0]; // Get the object at index 0 (can be undefined)
       return this.getInitials(value, args).toUpperCase();
     } else {
       throw new Error(`value is not a valid Stagiaire object`);
@@ -16,26 +18,30 @@ export class InitialsPipe implements PipeTransform {
   }
 
   private getInitials(stagiaire: Stagiaire, variation: unknown[]): string {
-     // Get the object passed as parameter to the pipe
-     const variant: any = variation[0];
 
-    if (variant !== undefined && variant.firstNameFirst === false) { // 1 ET 1 => true, 1 ET 0 => false, 0 ET 1 => false, 0 ET 0 => false
+    if (this.variant !== undefined && this.variant.firstNameFirst === false) { // 1 ET 1 => true, 1 ET 0 => false, 0 ET 1 => false, 0 ET 0 => false
       return this.lastNameFirst(stagiaire);
     }
     
     return this.firstNameFirst(stagiaire);
-
-    return variant.firstNameFirst ? this.firstNameFirst(stagiaire) : this.lastNameFirst(stagiaire);
   }
 
   private firstNameFirst(stagiaire: Stagiaire): string {
-    return stagiaire.getFirstName().charAt(0) + 
-    stagiaire.getLastName().charAt(0);
+    return this.firstName(stagiaire.getFirstName()) + stagiaire.getLastName().charAt(0);
   }
 
   private lastNameFirst(stagiaire: Stagiaire): string {
     return stagiaire.getLastName().charAt(0) + 
-    stagiaire.getFirstName().charAt(0);
+      this.firstName(stagiaire.getFirstName());
   }
 
+  private firstName(firstName: string): string  {
+    if (this.variant && this.variant.full) {
+      const dashPosition: number = firstName.indexOf('-');
+      if (dashPosition !== -1) {
+        return firstName.charAt(0) + firstName.charAt(dashPosition + 1);
+      }
+    }
+    return firstName.charAt(0);
+  }
 }

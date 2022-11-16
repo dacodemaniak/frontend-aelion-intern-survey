@@ -11,7 +11,7 @@ import { StagiaireService } from 'src/app/core/services/stagiaire.service';
 export class StagiaireTableComponent implements OnInit {
 
   public stagiaires: Array<Stagiaire> = [];
-  public stopDate: Date | null = new Date(1950, 11, 31);
+  public stopDate: Date | null = null;
 
   constructor(private stagiaireService: StagiaireService) {}
 
