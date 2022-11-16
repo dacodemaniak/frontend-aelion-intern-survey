@@ -3,6 +3,7 @@
 <table>
     <thead>
         <tr><!-- tr : table row-->
+            <th>&nbsp;</th>
             <th>#</th>
             <th>Lastname</th>
             <th>Firstname</th>
@@ -14,9 +15,11 @@
     <tbody>
         <ng-container *ngFor="let stagiaire of stagiaires">
             <tr *ngIf="changeView(stagiaire)">
-                
                 <td>
-                    {{ stagiaire | initials: {firstNameFirst: true, full: true} }} {{ stagiaire.getId() }}
+                    {{ stagiaire | initials: {firstNameFirst: true, full: true} }}
+                </td>
+                <td>
+                    {{ stagiaire.getId() }}
                 </td>
                 <td>
                     {{ stagiaire.getLastName() | uppercase }}
@@ -35,7 +38,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="4">Nb. items</td>
+            <td colspan="5">Nb. items</td>
             <td>{{ getVisibleStagiaireNumber()}}</td>
         </tr>
     </tfoot>
