@@ -1,6 +1,35 @@
+$font-color: rgb(5, 5, 200);
+$inversed-font-color: rgb(255, 255, 255);
+
 button {
+    border-radius: .5em;
+    background-color: transparent;
+    border: none;
+    color: $font-color;
+    width: 8em;
+    height: 2em;
+    line-height: 2em;
+    vertical-align: middle;
+    text-align: center;
     &.active {
         font-weight: bold;
-        background-color: rgb(200, 137, 75);
+        background-color: $font-color;
+        color: $inversed-font-color;
+        animation: coolEffect .8s ease-out 0s 1 backwards;
+    }
+}
+
+@keyframes coolEffect {
+    0% {
+        background-color: rgba(5, 5, 200, .5);
+        color: rgba(200, 200, 200, .5);
+    }
+    50% {
+        background-color: rgba(5, 5, 200, .7);
+        color: rgba(225, 225, 225, .7);
+    }
+    100% {
+        background-color: rgba(5, 5, 200, 1);
+        color: $inversed-font-color;
     }
 }

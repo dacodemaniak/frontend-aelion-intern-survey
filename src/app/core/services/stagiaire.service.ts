@@ -28,7 +28,9 @@ export class StagiaireService {
       return this.stagiaires.length;
     }
 
-    return this.stagiaires.filter((obj: Stagiaire) => obj.getBirthDate() > date).length;
+    return (date.getDate() === 31) ? 
+      this.stagiaires.filter((obj: Stagiaire) => obj.getBirthDate() > date).length :
+      this.stagiaires.filter((obj: Stagiaire) => obj.getBirthDate() < date).length
   }
   private feedIt(): void {
     let stagiaire: Stagiaire = new Stagiaire();
