@@ -5,12 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StagiaireTableComponent } from './stagiaires/components/stagiaire-table/stagiaire-table.component';
 import { StagiaireFilterComponent } from './stagiaires/components/stagiaire.filter/stagiaire.filter.component';
+import { InitialsPipe } from './shared/pipes/initials.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     StagiaireTableComponent,
-    StagiaireFilterComponent
+    StagiaireFilterComponent,
+    InitialsPipe
   ],
   imports: [
     BrowserModule,

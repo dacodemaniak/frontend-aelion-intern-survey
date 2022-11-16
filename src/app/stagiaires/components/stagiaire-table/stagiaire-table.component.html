@@ -16,7 +16,7 @@
             <tr *ngIf="changeView(stagiaire)">
                 
                 <td>
-                    {{ stagiaire.getId() }}
+                    {{ stagiaire | initials }} {{ stagiaire.getId() }}
                 </td>
                 <td>
                     {{ stagiaire.getLastName() | uppercase }}
