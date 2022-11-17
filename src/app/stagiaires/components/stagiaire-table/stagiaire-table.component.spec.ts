@@ -10,7 +10,11 @@ describe('StagiaireTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StagiaireTableComponent, InitialsPipe, StagiaireFilterComponent ]
+      declarations: [ 
+        StagiaireTableComponent,
+        InitialsPipe,
+        StagiaireFilterComponent
+      ]
     })
     .compileComponents();
   });

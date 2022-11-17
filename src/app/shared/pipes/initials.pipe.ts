@@ -1,25 +1,36 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Stagiaire } from 'src/app/core/models/stagiaire';
+import { VariantType } from './variant-type';
 
 @Pipe({
   name: 'initials'
 })
 export class InitialsPipe implements PipeTransform {
 
-  private variant: any;
+  private variant: VariantType | null = null;
 
-  transform(value: unknown, ...args: unknown[]): unknown {
+  transform(value: unknown, ...args: any[]): string {
     if (value instanceof Stagiaire) {
-      this.variant = args[0]; // Get the object at index 0 (can be undefined)
-      return this.getInitials(value, args).toUpperCase();
+      if (args.length) {
+        if (typeof args[0] === 'object' && this.isVariant(args[0])) {
+          this.variant = args[0]; // Get the object at index 0 (can be undefined)
+          return this.getInitials(value, args).toUpperCase();
+        } else {
+          console.log(`Args is : ${args}`)
+          throw new Error(`args[0] is not of type VariantType`);
+        }
+      } else {
+        return this.getInitials(value, args).toUpperCase();
+      }
     } else {
       throw new Error(`value is not a valid Stagiaire object`);
     }
+    
   }
 
   private getInitials(stagiaire: Stagiaire, variation: unknown[]): string {
 
-    if (this.variant !== undefined && this.variant.firstNameFirst === false) { // 1 ET 1 => true, 1 ET 0 => false, 0 ET 1 => false, 0 ET 0 => false
+    if (this.variant !== null && this.variant!.firstNameFirst === false) { // 1 ET 1 => true, 1 ET 0 => false, 0 ET 1 => false, 0 ET 0 => false
       return this.lastNameFirst(stagiaire);
     }
     
@@ -43,5 +54,14 @@ export class InitialsPipe implements PipeTransform {
       }
     }
     return firstName.charAt(0);
+  }
+
+  private isVariant(obj: any): boolean {
+    for (const property in obj) {
+      if (property === 'firstNameFirst' || property === 'full') {
+        return true;
+      }
+    }
+    return false;
   }
 }

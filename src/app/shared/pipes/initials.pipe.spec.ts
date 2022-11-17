@@ -1,5 +1,6 @@
 import { Stagiaire } from 'src/app/core/models/stagiaire';
 import { InitialsPipe } from './initials.pipe';
+import { VariantType } from './variant-type';
 
 describe('InitialsPipe', () => {
   it('create an instance', () => {
@@ -23,7 +24,9 @@ describe('InitialsPipe', () => {
     stagiaire.setFirstName('Jean-Luc');
 
     const pipe = new InitialsPipe();
-    const variation: any = {firstNameFirst: false};
+
+    const variation: VariantType = {firstNameFirst: false};
+
     expect(pipe.transform(stagiaire, variation)).toBe('AJ');
   });
 
@@ -33,7 +36,7 @@ describe('InitialsPipe', () => {
     stagiaire.setFirstName('Jean-Luc');
 
     const pipe = new InitialsPipe();
-    const variation: any = {full: true};
+    const variation: VariantType = {full: true};
     expect(pipe.transform(stagiaire, variation)).toBe('JLA');
   });
 
@@ -43,8 +46,49 @@ describe('InitialsPipe', () => {
     stagiaire.setFirstName('Jean-Luc');
 
     const pipe = new InitialsPipe();
-    const variation: any = {firstNameFirst: false, full: true};
+    const variation: VariantType = {firstNameFirst: false, full: true};
     expect(pipe.transform(stagiaire, variation)).toBe('AJL');
+  });
+
+  it(`Should throw an Error if value is not a Stagiaire instance`, () => {
+    const stagiaire: any = 'something wrong';
+
+    const pipe = new InitialsPipe();
+
+    expect(() => pipe.transform(stagiaire)).toThrowError();
+  });
+
+  it(`Should return JB even if full is set to true`, () => {
+    const stagiaire: Stagiaire = new Stagiaire();
+    stagiaire.setLastName('Bond');
+    stagiaire.setFirstName('James');
+
+    const pipe = new InitialsPipe();
+    const variation: VariantType = {full: true};
+
+    expect(pipe.transform(stagiaire, variation)).toBe('JB');
+  });
+
+  it(`Should return BJ even if full is set to true and firstNameFirst to false`, () => {
+    const stagiaire: Stagiaire = new Stagiaire();
+    stagiaire.setLastName('Bond');
+    stagiaire.setFirstName('James');
+
+    const pipe = new InitialsPipe();
+    const variation: VariantType = {full: true, firstNameFirst: false};
+
+    expect(pipe.transform(stagiaire, variation)).toBe('BJ');
+  });
+
+  it(`Should throw an Error if variation is not of type VariantType`, () => {
+    const stagiaire: Stagiaire = new Stagiaire();
+    stagiaire.setLastName('Bond');
+    stagiaire.setFirstName('James');
+
+    const pipe = new InitialsPipe();
+    const variation: any = {pouet: 'coucou'};
+
+    expect(() => pipe.transform(stagiaire, variation)).toThrowError();
   });
 
 });
