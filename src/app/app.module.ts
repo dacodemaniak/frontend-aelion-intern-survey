@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { StagiaireTableComponent } from './stagiaires/components/stagiaire-table/stagiaire-table.component';
 import { StagiaireFilterComponent } from './stagiaires/components/stagiaire.filter/stagiaire.filter.component';
 import { InitialsPipe } from './shared/pipes/initials.pipe';
+import { StagiaireDetailComponent } from './stagiaires/stagiaire-detail/stagiaire-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StagiaireTableComponent,
     StagiaireFilterComponent,
-    InitialsPipe
+    InitialsPipe,
+    StagiaireDetailComponent
   ],
   imports: [
     BrowserModule,

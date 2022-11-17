@@ -12,6 +12,12 @@ export class StagiaireTableComponent implements OnInit {
 
   public stagiaires: Array<Stagiaire> = [];
   public stopDate: Date | null = null;
+  /**
+   * if true detail is visible, hidden else
+   */
+  public isDetailHidden: boolean = true;
+
+  public selectedStagiaire: Stagiaire | null = null;
 
   constructor(private stagiaireService: StagiaireService) {}
 
@@ -26,6 +32,14 @@ export class StagiaireTableComponent implements OnInit {
   public onRemove(stagiaire: Stagiaire): void {
     console.log(`L'utilisateur souhaite supprimer ${stagiaire.getLastName()}`);
     this.stagiaireService.delete(stagiaire);
+  }
+
+  public onClick(stagiaire: Stagiaire): void {
+    if (this.isDetailHidden) {
+      // Il faut que j'arrive à afficher un composant
+      this.isDetailHidden = false;
+      this.selectedStagiaire = stagiaire; 
+    }
   }
 
   public filterChanged(event: Date | null): void {
@@ -43,6 +57,10 @@ export class StagiaireTableComponent implements OnInit {
     }
 
     return stagiaire.getBirthDate() < this.stopDate;
+  }
+
+  public onDetailClose(event: boolean): void {
+    this.isDetailHidden = event;
   }
 
 }

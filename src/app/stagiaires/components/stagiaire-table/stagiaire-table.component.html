@@ -14,7 +14,7 @@
 
     <tbody>
         <ng-container *ngFor="let stagiaire of stagiaires">
-            <tr *ngIf="changeView(stagiaire)">
+            <tr *ngIf="changeView(stagiaire)" (click)="onClick(stagiaire)">
                 <td>
                     {{ stagiaire | initials: {firstNameFirst: true, full: true} }}
                 </td>
@@ -43,3 +43,10 @@
         </tr>
     </tfoot>
 </table>
+
+<!-- Stagiaire detail goes here -->
+<app-stagiaire-detail
+    [hidden]="isDetailHidden"
+    (onCloseEvent)="onDetailClose($event)"
+    [stagiaire]="selectedStagiaire!"
+></app-stagiaire-detail>
