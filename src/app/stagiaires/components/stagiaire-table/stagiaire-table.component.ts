@@ -19,6 +19,20 @@ export class StagiaireTableComponent implements OnInit {
 
   public selectedStagiaire: Stagiaire | null = null;
 
+  public bubbleConfig: any = {
+    height: '2em',
+    width: '2em',
+    lineHeight: '2em', // equiv css : line-height
+    backgroundColor: 'rgba(20, 20, 200, .5)',
+    borderColor: 'darken(rgba(20, 20, 200, .5)), 25%)',
+    color: '#fff',
+    borderRadius: '50%',
+    fontWeight: 'bold',
+    verticalAlign: 'middle',
+    textAlign: 'center',
+    display: 'inline-block'
+  }
+
   constructor(private stagiaireService: StagiaireService) {}
 
   ngOnInit(): void {

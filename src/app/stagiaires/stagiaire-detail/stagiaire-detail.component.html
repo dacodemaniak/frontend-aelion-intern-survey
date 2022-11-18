@@ -2,7 +2,7 @@
     <div class="outer-dialog">
         <div class="inner-dialog">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header" appBubble [config]="bubbleConfig">
                     {{ stagiaire | initials }}
                 </div>
                 <div class="card-content">
