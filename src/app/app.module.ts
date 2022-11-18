@@ -7,6 +7,7 @@ import { StagiaireTableComponent } from './stagiaires/components/stagiaire-table
 import { StagiaireFilterComponent } from './stagiaires/components/stagiaire.filter/stagiaire.filter.component';
 import { InitialsPipe } from './shared/pipes/initials.pipe';
 import { StagiaireDetailComponent } from './stagiaires/stagiaire-detail/stagiaire-detail.component';
+import { BubbleDirective } from './shared/directives/bubble.directive';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { StagiaireDetailComponent } from './stagiaires/stagiaire-detail/stagiair
     StagiaireTableComponent,
     StagiaireFilterComponent,
     InitialsPipe,
-    StagiaireDetailComponent
+    StagiaireDetailComponent,
+    BubbleDirective
   ],
   imports: [
     BrowserModule,
