@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[appBubble]'
@@ -52,6 +52,15 @@ export class BubbleDirective implements OnInit {
     }
   }
     
-  
+  @HostListener('click') public onClick() {
+    const nativeElement: HTMLElement = this.elementRef.nativeElement;
+    this.renderer.addClass(nativeElement, 'zoom-in');
+    setTimeout(
+      () => {
+        this.renderer.removeClass(nativeElement, 'zoom-in')
+      },
+      1000
+    );
+  }
 
 }

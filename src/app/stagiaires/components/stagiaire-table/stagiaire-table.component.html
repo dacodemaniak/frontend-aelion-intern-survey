@@ -14,7 +14,7 @@
 
     <tbody>
         <ng-container *ngFor="let stagiaire of stagiaires">
-            <tr *ngIf="changeView(stagiaire)" (click)="onClick(stagiaire)">
+            <tr *ngIf="changeView(stagiaire)" >
                 <td>
                     <span appBubble [config]="bubbleConfig">
                         {{ stagiaire | initials: {firstNameFirst: true, full: true} }}
