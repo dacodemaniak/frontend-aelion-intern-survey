@@ -9,7 +9,6 @@ import { HandleDetailService } from 'src/app/shared/directives/handle-detail.ser
 })
 export class StagiaireDetailComponent implements OnInit {
 
-  @Output() onCloseEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() stagiaire!: Stagiaire;
 
   public bubbleConfig: any = {
@@ -31,6 +30,6 @@ export class StagiaireDetailComponent implements OnInit {
   }
 
   public onClose(): void {
-    this.onCloseEvent.emit(true);
+    this.handleDetailService.setIsDetailHidden(true);
   }
 }

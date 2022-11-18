@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { Stagiaire } from 'src/app/core/models/stagiaire';
 import { StagiaireService } from 'src/app/core/services/stagiaire.service';
 import { HandleDetailService } from 'src/app/shared/directives/handle-detail.service';
@@ -16,7 +17,7 @@ export class StagiaireTableComponent implements OnInit {
   /**
    * if true detail is visible, hidden else
    */
-  public isDetailHidden: boolean = true;
+  public isDetailHidden$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   public selectedStagiaire: Stagiaire | null = null;
 
@@ -41,11 +42,7 @@ export class StagiaireTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.stagiaires = this.stagiaireService.getStagiaires();
-
-    this.handleDetailService.isDetailHidden.subscribe((isDetailHidden: boolean) => {
-      console.log(isDetailHidden ? 'Caché' : 'Affiché');
-      this.isDetailHidden = isDetailHidden;
-    });
+    this.isDetailHidden$ = this.handleDetailService.isDetailHidden;
   }
 
   public getVisibleStagiaireNumber(): number {
@@ -78,9 +75,4 @@ export class StagiaireTableComponent implements OnInit {
 
     return stagiaire.getBirthDate() < this.stopDate;
   }
-
-  public onDetailClose(event: boolean): void {
-    this.isDetailHidden = event;
-  }
-
 }

@@ -51,7 +51,6 @@
 
 <!-- Stagiaire detail goes here -->
 <app-stagiaire-detail
-    [hidden]="isDetailHidden"
-    (onCloseEvent)="onDetailClose($event)"
+    [hidden]="isDetailHidden$ | async"
     [stagiaire]="selectedStagiaire!"
 ></app-stagiaire-detail>
