@@ -12,6 +12,9 @@ export class AppComponent {
 
   public stagiaires: Array<Stagiaire> = this.stagiaireService.getStagiaires();
 
+  public inputType: string = 'password';
+  public abbrHTML: string = 'Hyper Text Markup Language';
+  
   public constructor(
     private stagiaireService: StagiaireService
   ) {}
@@ -21,6 +24,20 @@ export class AppComponent {
       this.title = 'Hello Angular';
     } else {
       this.title = 'Suivi des stagiaires';
+    }
+  }
+
+  public showPassword(): void {
+    if (this.inputType === 'password') {
+      this.inputType = 'text';
+      setTimeout(
+        () => {
+          this.inputType = 'password'
+        },
+        800
+      )
+    } else {
+      this.inputType = 'password';
     }
   }
 
