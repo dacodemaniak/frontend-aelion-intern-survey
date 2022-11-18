@@ -41,7 +41,9 @@ export class StagiaireTableComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.stagiaires = this.stagiaireService.getStagiaires();
+    this.stagiaireService.findAll().subscribe((stagiaires: Stagiaire[]) => {
+      this.stagiaires = stagiaires;
+    })
     this.isDetailHidden$ = this.handleDetailService.isDetailHidden;
   }
 

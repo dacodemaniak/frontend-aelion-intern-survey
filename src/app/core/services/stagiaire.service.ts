@@ -1,4 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import { Stagiaire } from '../models/stagiaire';
 
 @Injectable({
@@ -7,8 +10,31 @@ import { Stagiaire } from '../models/stagiaire';
 export class StagiaireService {
   private stagiaires: Array<Stagiaire> = [];
   
-  constructor() {
+  constructor(
+    private httpClient: HttpClient
+  ) {
     this.feedIt();
+  }
+
+  public findAll(): Observable<Stagiaire[]> {
+    return this.httpClient.get<any>(
+      'http://localhost:3000/stagiaires'
+    )
+    .pipe(
+      take(1),
+      map((stagiaires: any[]) => {
+        return stagiaires.map((inputStagiaire: any) => {
+          const stagiaire: Stagiaire = new Stagiaire();
+          stagiaire.setId(inputStagiaire.id);
+          stagiaire.setLastName(inputStagiaire.lastName);
+          stagiaire.setFirstName(inputStagiaire.firstName);
+          stagiaire.setEmail(inputStagiaire.email);
+          stagiaire.setPhoneNumber(inputStagiaire.phoneNumber);
+          stagiaire.setBirthDate(new Date(inputStagiaire.birthDate));
+          return stagiaire;
+        })
+      })
+    )
   }
 
   public getStagiaires(): Array<Stagiaire> {
