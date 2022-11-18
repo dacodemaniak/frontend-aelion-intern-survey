@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Stagiaire } from 'src/app/core/models/stagiaire';
 import { StagiaireService } from 'src/app/core/services/stagiaire.service';
+import { HandleDetailService } from 'src/app/shared/directives/handle-detail.service';
 
 
 @Component({
@@ -33,10 +34,18 @@ export class StagiaireTableComponent implements OnInit {
     display: 'inline-block'
   }
 
-  constructor(private stagiaireService: StagiaireService) {}
+  constructor(
+    private stagiaireService: StagiaireService,
+    private handleDetailService: HandleDetailService
+  ) {}
 
   ngOnInit(): void {
     this.stagiaires = this.stagiaireService.getStagiaires();
+
+    this.handleDetailService.isDetailHidden.subscribe((isDetailHidden: boolean) => {
+      console.log(isDetailHidden ? 'Caché' : 'Affiché');
+      this.isDetailHidden = isDetailHidden;
+    });
   }
 
   public getVisibleStagiaireNumber(): number {
@@ -49,11 +58,8 @@ export class StagiaireTableComponent implements OnInit {
   }
 
   public onClick(stagiaire: Stagiaire): void {
-    if (this.isDetailHidden) {
-      // Il faut que j'arrive à afficher un composant
-      this.isDetailHidden = false;
-      this.selectedStagiaire = stagiaire; 
-    }
+      this.selectedStagiaire = stagiaire;
+      this.handleDetailService.setIsDetailHidden(false);
   }
 
   public filterChanged(event: Date | null): void {

@@ -16,7 +16,7 @@
         <ng-container *ngFor="let stagiaire of stagiaires">
             <tr *ngIf="changeView(stagiaire)" >
                 <td>
-                    <span appBubble [config]="bubbleConfig">
+                    <span appBubble [config]="bubbleConfig" (click)="onClick(stagiaire)">
                         {{ stagiaire | initials: {firstNameFirst: true, full: true} }}
                     </span>
                     <!-- nativeElement 

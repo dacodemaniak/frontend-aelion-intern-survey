@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Stagiaire } from 'src/app/core/models/stagiaire';
+import { HandleDetailService } from 'src/app/shared/directives/handle-detail.service';
 
 @Component({
   selector: 'app-stagiaire-detail',
@@ -22,7 +23,9 @@ export class StagiaireDetailComponent implements OnInit {
     fontFamily: 'Arial, Helvetica, sans-serif',
   }
 
-  constructor() { }
+  constructor(
+    private handleDetailService: HandleDetailService
+  ) { }
 
   ngOnInit(): void {
   }
