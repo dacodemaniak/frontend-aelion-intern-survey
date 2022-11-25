@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +10,7 @@ import { InitialsPipe } from './shared/pipes/initials.pipe';
 import { StagiaireDetailComponent } from './stagiaires/stagiaire-detail/stagiaire-detail.component';
 import { BubbleDirective } from './shared/directives/bubble.directive';
 import { HttpClientModule } from '@angular/common/http';
+import { StagiaireFormComponent } from './stagiaires/components/stagiaire-form/stagiaire-form.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -16,12 +18,14 @@ import { HttpClientModule } from '@angular/common/http';
     StagiaireFilterComponent,
     InitialsPipe,
     StagiaireDetailComponent,
-    BubbleDirective
+    BubbleDirective,
+    StagiaireFormComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
