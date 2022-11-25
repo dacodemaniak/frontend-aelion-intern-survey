@@ -29,11 +29,11 @@ export class StagiaireService {
         return stagiaires.map((inputStagiaire: any) => {
           const stagiaire: Stagiaire = new Stagiaire();
           stagiaire.setId(inputStagiaire.id);
-          stagiaire.setLastName(inputStagiaire.lastName);
-          stagiaire.setFirstName(inputStagiaire.firstName);
+          stagiaire.setLastName(inputStagiaire.lastname);
+          stagiaire.setFirstName(inputStagiaire.firstname);
           stagiaire.setEmail(inputStagiaire.email);
           stagiaire.setPhoneNumber(inputStagiaire.phoneNumber);
-          stagiaire.setBirthDate(new Date(inputStagiaire.birthDate));
+          stagiaire.setBirthDate(new Date(inputStagiaire.birthdate));
           return stagiaire;
         })
       })
