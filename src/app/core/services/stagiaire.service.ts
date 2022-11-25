@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment'; 
 import { Stagiaire } from '../models/stagiaire';
 
 @Injectable({
@@ -9,16 +10,18 @@ import { Stagiaire } from '../models/stagiaire';
 })
 export class StagiaireService {
   private stagiaires: Array<Stagiaire> = [];
+  private controllerBaseUrl!: string; 
   
   constructor(
     private httpClient: HttpClient
   ) {
-    this.feedIt();
+    this.controllerBaseUrl = `${environment.apiBaseUrl}/trainee`;
+    //  this.feedIt();
   }
 
   public findAll(): Observable<Stagiaire[]> {
     return this.httpClient.get<any>(
-      'http://localhost:3000/stagiaires'
+      this.controllerBaseUrl
     )
     .pipe(
       take(1),
@@ -42,11 +45,27 @@ export class StagiaireService {
   }
 
   public delete(stagiaire: Stagiaire): void {
-    console.log(`Le composant me demande de supprimer ${stagiaire.getLastName()}`);
-    const stagiaireIndex: number = this.stagiaires.findIndex(
-      (obj: Stagiaire) => obj.getId() === stagiaire.getId()
-    );
-    this.stagiaires.splice(stagiaireIndex,1);
+    console.log('delete stagiaire asked: ' 
+        + stagiaire.getLastName()      
+        + '(' + stagiaire.getId() +')')
+    // 1. call backend
+    this.httpClient.delete(
+      `${this.controllerBaseUrl}/${stagiaire.getId()}`
+      )
+      .subscribe(
+        _ => {
+          // remote remove is done
+          console.log('delete stagiaire in remote api done: ' 
+            + stagiaire.getLastName()      
+            + '(' + stagiaire.getId() +')')
+          // 2. adapt local list
+          const stagiaireIndex: number = this.stagiaires.findIndex(
+            (obj: Stagiaire) => obj.getId() === stagiaire.getId()
+          );
+          this.stagiaires.splice(stagiaireIndex,1);
+        }
+      )
+    
   }
 
   public getVisibleStagiaireNumber(date: Date | null): number {

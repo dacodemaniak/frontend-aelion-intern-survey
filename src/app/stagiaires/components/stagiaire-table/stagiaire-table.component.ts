@@ -41,14 +41,17 @@ export class StagiaireTableComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.stagiaireService.findAll().subscribe((stagiaires: Stagiaire[]) => {
-      this.stagiaires = stagiaires;
-    })
+    this.stagiaireService
+        .findAll()
+        .subscribe((stagiaires: Stagiaire[]) => {
+            this.stagiaires = stagiaires;
+        })
     this.isDetailHidden$ = this.handleDetailService.isDetailHidden;
   }
 
   public getVisibleStagiaireNumber(): number {
-    return this.stagiaireService.getVisibleStagiaireNumber(this.stopDate);
+    return this.stagiaireService.getVisibleStagiaireNumber(
+          this.stopDate);
   }
 
   public onRemove(stagiaire: Stagiaire): void {
