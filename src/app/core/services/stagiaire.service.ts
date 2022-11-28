@@ -1,6 +1,6 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment'; 
 import { Stagiaire } from '../models/stagiaire';
@@ -42,6 +42,25 @@ export class StagiaireService {
 
   public getStagiaires(): Array<Stagiaire> {
     return this.stagiaires;
+  }
+
+  public add(stagiaire: Stagiaire): void {
+    // hack to provoke error
+    // stagiaire.setFirstName('')
+    // end hack here
+    console.log('add stagiaire asked: ', stagiaire)
+    this.httpClient.post(this.controllerBaseUrl, 
+            // stagiaire // pb jsonification
+            { lastname: 'Bond', firstname: 'James', email: 'kill@007.org' }
+        )
+          .pipe(
+            // take + map : res Json => Stagiaire
+            catchError((error: HttpErrorResponse) => {
+              console.log("Stagiaire not created:", error)
+              return throwError(() => new Error("Not Created"))
+            })
+          )
+          .subscribe(res => console.log("Response: ", res))
   }
 
   public delete(stagiaire: Stagiaire): void {
