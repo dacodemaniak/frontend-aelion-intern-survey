@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/htt
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
+import { StagiaireDto } from 'src/app/stagiaires/dto/stagiaire-dto';
 import { environment } from 'src/environments/environment'; 
 import { Stagiaire } from '../models/stagiaire';
 
@@ -44,24 +45,11 @@ export class StagiaireService {
     return this.stagiaires;
   }
 
-  public add(stagiaire: Stagiaire): void {
-    // hack to provoke error
-    // stagiaire.setFirstName('')
-    // end hack here
+  public add(stagiaire: StagiaireDto): void {
     console.log('add stagiaire asked: ', stagiaire)
-    
-    const dto: any = {};
-    dto.lastname = stagiaire.getLastName()
-    dto.firstname = stagiaire.getFirstName()
-    dto.birthdate = stagiaire.getBirthDate() === null ? null : stagiaire.getBirthDate()
-    dto.phoneNumber = stagiaire.getPhoneNumber()
-    dto.email = stagiaire.getEmail()
-
-    console.log('dto says: ', dto)
     // Transform any to Stagiaire
-    this.httpClient.post(this.controllerBaseUrl, 
-            dto // pb jsonification
-            //{ lastname: 'Bond', firstname: 'James', email: 'kill@007.org' }
+    this.httpClient.post<StagiaireDto>(this.controllerBaseUrl, 
+            stagiaire
         )
           .pipe(
             // take + map : res Json => Stagiaire
