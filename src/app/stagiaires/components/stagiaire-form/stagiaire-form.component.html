@@ -1,31 +1,40 @@
 <form [formGroup]="stagiaireForm" (ngSubmit)="onSubmit()">
     <div>
-        <label for="lastName">Lastname: </label>
-        <input id="lastName" type="text" formControlName="lastName">
+        <mat-form-field>
+            <input 
+                matInput 
+                placeholder="Nom du stagiaire..." 
+                id="lastName" 
+                formControlName="lastname"
+            >
+        </mat-form-field>
     </div>
 
     <div>
-        <label for="firstName">Firstname: </label>
-        <input id="firstName" type="text" formControlName="firstName">
+        <mat-form-field>
+        <input id="firstName" placeholder="Prénom du stagiaire..." matInput formControlName="firstname">
+        </mat-form-field>
     </div>
 
     <div>
-        <label for="email">Email: </label>
-        <input id="email" type="email" formControlName="email">
+        <mat-form-field>
+            <input matInput placeholder="Email du stagiaire..." id="email" type="email" formControlName="email">
+        </mat-form-field>
     </div>
 
     <div>
-        <label for="phoneNumber">Phone number: </label>
-        <input id="phoneNumber" type="text" formControlName="phoneNumber">
+        <mat-form-field>
+            <input matInput placeholder="Numéro de téléphone..." id="phoneNumber" type="text" formControlName="phoneNumber">
+        </mat-form-field>
     </div>
 
     <div>
         <label for="birthDate">Birthdate: </label>
-        <input id="birthDate" type="date" formControlName="birthDate">
+        <input id="birthDate" type="date" formControlName="birthdate">
     </div>
 
     <div>
-        <button [disabled]="!stagiaireForm.valid">Ajouter stagiaire</button>
+        <button mat-raised-button color="primary" [disabled]="!stagiaireForm.valid">Ajouter stagiaire</button>
     </div>
 </form>
 

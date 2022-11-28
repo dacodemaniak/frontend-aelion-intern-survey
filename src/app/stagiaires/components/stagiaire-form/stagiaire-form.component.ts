@@ -13,15 +13,15 @@ export class StagiaireFormComponent implements OnInit {
   // stagiaire: Stagiaire = new Stagiaire()
 
   stagiaireForm: FormGroup = new FormGroup({
-      lastName: new FormControl('', 
+      lastname: new FormControl('', 
           Validators.required),
-      firstName: new FormControl('', Validators.required),
+      firstname: new FormControl('', Validators.required),
       email: new FormControl('', [
           Validators.required, 
           Validators.email]),
       phoneNumber: new FormControl('', 
           Validators.pattern("^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$")),
-      birthDate: new FormControl(null),
+      birthdate: new FormControl(null),
   })
 
   constructor(private stagiaireService: StagiaireService) { }
@@ -33,9 +33,10 @@ export class StagiaireFormComponent implements OnInit {
     // TODO: Use EventEmitter with form value
     console.log("Read from form:", this.stagiaireForm.value)
     const stagiaire: Stagiaire = new Stagiaire()
-    stagiaire.setLastName(this.stagiaireForm.value.lastName)
-    stagiaire.setFirstName(this.stagiaireForm.value.firstName)
+    stagiaire.setLastName(this.stagiaireForm.value.lastname)
+    stagiaire.setFirstName(this.stagiaireForm.value.firstname)
     stagiaire.setEmail(this.stagiaireForm.value.email)
+    stagiaire.setPhoneNumber(this.stagiaireForm.value.phoneNumber)
     if (this.stagiaireForm.value.birthDate != null) {
       stagiaire.setBirthDate(new Date(this.stagiaireForm.value.birthDate))
     }

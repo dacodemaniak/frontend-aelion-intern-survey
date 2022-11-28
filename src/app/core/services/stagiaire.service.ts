@@ -49,9 +49,19 @@ export class StagiaireService {
     // stagiaire.setFirstName('')
     // end hack here
     console.log('add stagiaire asked: ', stagiaire)
+    
+    const dto: any = {};
+    dto.lastname = stagiaire.getLastName()
+    dto.firstname = stagiaire.getFirstName()
+    dto.birthdate = stagiaire.getBirthDate() === null ? null : stagiaire.getBirthDate()
+    dto.phoneNumber = stagiaire.getPhoneNumber()
+    dto.email = stagiaire.getEmail()
+
+    console.log('dto says: ', dto)
+    // Transform any to Stagiaire
     this.httpClient.post(this.controllerBaseUrl, 
-            // stagiaire // pb jsonification
-            { lastname: 'Bond', firstname: 'James', email: 'kill@007.org' }
+            dto // pb jsonification
+            //{ lastname: 'Bond', firstname: 'James', email: 'kill@007.org' }
         )
           .pipe(
             // take + map : res Json => Stagiaire
