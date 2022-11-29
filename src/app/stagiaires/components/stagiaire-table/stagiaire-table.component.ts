@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { Stagiaire } from 'src/app/core/models/stagiaire';
 import { StagiaireService } from 'src/app/core/services/stagiaire.service';
@@ -37,7 +38,8 @@ export class StagiaireTableComponent implements OnInit {
 
   constructor(
     private stagiaireService: StagiaireService,
-    private handleDetailService: HandleDetailService
+    private handleDetailService: HandleDetailService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -60,8 +62,7 @@ export class StagiaireTableComponent implements OnInit {
   }
 
   public onClick(stagiaire: Stagiaire): void {
-      this.selectedStagiaire = stagiaire;
-      this.handleDetailService.setIsDetailHidden(false);
+    this.router.navigate(['/', 'stagiaire', stagiaire.getId()]);
   }
 
   public filterChanged(event: Date | null): void {

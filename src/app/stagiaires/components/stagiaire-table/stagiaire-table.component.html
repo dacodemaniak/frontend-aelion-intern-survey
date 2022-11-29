@@ -19,7 +19,7 @@
                     <span appBubble [config]="bubbleConfig" (click)="onClick(stagiaire)">
                         {{ stagiaire | initials: {firstNameFirst: true, full: true} }}
                     </span>
-                    <!-- nativeElement 
+                    <!-- nativeElement
                         <span appBubble>JLA</span>
                     -->
                 </td>
@@ -49,8 +49,4 @@
     </tfoot>
 </table>
 
-<!-- Stagiaire detail goes here -->
-<app-stagiaire-detail
-    [hidden]="isDetailHidden$ | async"
-    [stagiaire]="selectedStagiaire!"
-></app-stagiaire-detail>
+<a [routerLink]="['/', 'stagiaire', 'add']">Ajouter</a>
