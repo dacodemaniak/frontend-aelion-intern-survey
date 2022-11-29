@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { StagiaireDto } from 'src/app/stagiaires/dto/stagiaire-dto';
-import { environment } from 'src/environments/environment'; 
+import { environment } from 'src/environments/environment';
 import { Stagiaire } from '../models/stagiaire';
 
 @Injectable({
@@ -11,8 +11,8 @@ import { Stagiaire } from '../models/stagiaire';
 })
 export class StagiaireService {
   private stagiaires: Array<Stagiaire> = [];
-  private controllerBaseUrl!: string; 
-  
+  private controllerBaseUrl!: string;
+
   constructor(
     private httpClient: HttpClient
   ) {
@@ -41,6 +41,25 @@ export class StagiaireService {
     )
   }
 
+  public findOne(id: number): Observable<Stagiaire> {
+    return this.httpClient.get<any>(
+      `${this.controllerBaseUrl}/${id}`
+    )
+    .pipe(
+      take(1),
+      map((inputStagiaire: any) => {
+        const stagiaire: Stagiaire = new Stagiaire();
+        stagiaire.setId(inputStagiaire.id);
+        stagiaire.setLastName(inputStagiaire.lastname);
+        stagiaire.setFirstName(inputStagiaire.firstname);
+        stagiaire.setEmail(inputStagiaire.email);
+        stagiaire.setPhoneNumber(inputStagiaire.phoneNumber);
+        stagiaire.setBirthDate(new Date(inputStagiaire.birthdate));
+        return stagiaire;
+      })
+    )
+  }
+
   public getStagiaires(): Array<Stagiaire> {
     return this.stagiaires;
   }
@@ -48,7 +67,7 @@ export class StagiaireService {
   public add(stagiaire: StagiaireDto): void {
     console.log('add stagiaire asked: ', stagiaire)
     // Transform any to Stagiaire
-    this.httpClient.post<StagiaireDto>(this.controllerBaseUrl, 
+    this.httpClient.post<StagiaireDto>(this.controllerBaseUrl,
             stagiaire
         )
           .pipe(
@@ -62,8 +81,8 @@ export class StagiaireService {
   }
 
   public delete(stagiaire: Stagiaire): void {
-    console.log('delete stagiaire asked: ' 
-        + stagiaire.getLastName()      
+    console.log('delete stagiaire asked: '
+        + stagiaire.getLastName()
         + '(' + stagiaire.getId() +')')
     // 1. call backend
     this.httpClient.delete(
@@ -72,8 +91,8 @@ export class StagiaireService {
       .subscribe(
         _ => {
           // remote remove is done
-          console.log('delete stagiaire in remote api done: ' 
-            + stagiaire.getLastName()      
+          console.log('delete stagiaire in remote api done: '
+            + stagiaire.getLastName()
             + '(' + stagiaire.getId() +')')
           // 2. adapt local list
           const stagiaireIndex: number = this.stagiaires.findIndex(
@@ -82,7 +101,7 @@ export class StagiaireService {
           this.stagiaires.splice(stagiaireIndex,1);
         }
       )
-    
+
   }
 
   public getVisibleStagiaireNumber(date: Date | null): number {
@@ -90,7 +109,7 @@ export class StagiaireService {
       return this.stagiaires.length;
     }
 
-    return (date.getDate() === 31) ? 
+    return (date.getDate() === 31) ?
       this.stagiaires.filter((obj: Stagiaire) => obj.getBirthDate() > date).length :
       this.stagiaires.filter((obj: Stagiaire) => obj.getBirthDate() < date).length;
   }
