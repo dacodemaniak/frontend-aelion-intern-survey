@@ -1,6 +1,4 @@
 <ng-container *ngIf="stagiaire">
-    <div class="outer-dialog">
-        <div class="inner-dialog">
             <div class="card">
                 <div class="card-header" appBubble [config]="bubbleConfig">
                     {{ stagiaire | initials }}
@@ -12,11 +10,9 @@
                     <p>Email: {{ stagiaire.getEmail() }}</p>
                     <p>Phone number : {{ stagiaire.getPhoneNumber() }}</p>
                 </div>
-        
+
                 <div class="card-footer">
                     <button type="button" (click)="onClose()">Close</button>
                 </div>
             </div>
-        </div>
-    </div>
 </ng-container>

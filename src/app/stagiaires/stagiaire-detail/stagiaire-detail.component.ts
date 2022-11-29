@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Stagiaire } from 'src/app/core/models/stagiaire';
+import { StagiaireService } from 'src/app/core/services/stagiaire.service';
 import { HandleDetailService } from 'src/app/shared/directives/handle-detail.service';
 
 @Component({
@@ -23,13 +25,26 @@ export class StagiaireDetailComponent implements OnInit {
   }
 
   constructor(
-    private handleDetailService: HandleDetailService
+    private handleDetailService: HandleDetailService,
+    private route: ActivatedRoute,
+    private stagiaireService: StagiaireService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+    this.route.params
+      .subscribe((routeParams: Params) => {
+        console.log('Routes params ', JSON.stringify(routeParams))
+        const stagiaireId: number = routeParams['id'];
+        console.log('Id was : ', stagiaireId);
+        this.stagiaireService.findOne(stagiaireId)
+          .subscribe((stagiaire: Stagiaire) => {
+            this.stagiaire = stagiaire;
+          })
+      })
   }
 
   public onClose(): void {
-    this.handleDetailService.setIsDetailHidden(true);
+    this.router.navigate(['/', 'home']);
   }
 }
