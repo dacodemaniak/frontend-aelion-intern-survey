@@ -2,28 +2,5 @@
   {{ title }}
 </h1>
 
-<ul><!-- unordered list : liste non ordonnée -->
-  <li *ngFor="let stagiaire of stagiaires">
-    {{ stagiaire.getLastName() }}
-  </li>
-</ul>
-
-<!-- <button type="button" (click)="addStagiaire()">
-  Ajouter un stagiaire
-</button> -->
-
-<app-stagiaire-form></app-stagiaire-form>
-
-<app-stagiaire-table></app-stagiaire-table>
-
-
-<input [type]="inputType" placeholder="Your password...">
-<button 
-  type="button" 
-  (click)="showPassword()"
-  [disabled]="this.inputType === 'text'"
->
-    :&#x1F37A;
-</button>
-
-<p>Le langage <abbr [title]="abbrHTML">HTML</abbr>est interprété par Angular</p>
+<!-- Etagère à routes : c'est là qu'Angular charge les composants routés-->
+<router-outlet></router-outlet>
