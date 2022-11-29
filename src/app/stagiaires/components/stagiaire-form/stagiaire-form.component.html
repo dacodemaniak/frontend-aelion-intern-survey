@@ -1,10 +1,10 @@
 <form [formGroup]="stagiaireForm" (ngSubmit)="onSubmit()">
     <div>
         <mat-form-field>
-            <input 
-                matInput 
-                placeholder="Nom du stagiaire..." 
-                id="lastName" 
+            <input
+                matInput
+                placeholder="Nom du stagiaire..."
+                id="lastName"
                 formControlName="lastname"
             >
             <mat-error *ngIf="c['lastname'].errors && c['lastname'].touched">
@@ -46,7 +46,7 @@
                 <span *ngIf="c['phoneNumber'].hasError('pattern')">
                     Le numéro saisi n'est pas conforme
                 </span>
-            </mat-error>        
+            </mat-error>
         </mat-form-field>
     </div>
 
@@ -62,6 +62,7 @@
 
     <div>
         <button mat-raised-button color="primary" [disabled]="!stagiaireForm.valid">Ajouter stagiaire</button>
+        <button mat-raised-button color="danger" type="button" (click)="goHome()">Liste</button>
     </div>
 </form>
 
