@@ -64,44 +64,36 @@ export class StagiaireService {
     return this.stagiaires;
   }
 
-  public add(stagiaire: StagiaireDto): void {
+  public add(stagiaire: StagiaireDto): Observable<Stagiaire> {
     console.log('add stagiaire asked: ', stagiaire)
     // Transform any to Stagiaire
-    this.httpClient.post<StagiaireDto>(this.controllerBaseUrl,
-            stagiaire
+    return this.httpClient.post<StagiaireDto>(
+          this.controllerBaseUrl,
+          stagiaire
         )
-          .pipe(
-            // take + map : res Json => Stagiaire
-            catchError((error: HttpErrorResponse) => {
-              console.log("Stagiaire not created:", error)
-              return throwError(() => new Error("Not Created"))
-            })
-          )
-          .subscribe(res => console.log("Response: ", res))
+        .pipe(
+          take(1),
+          map((stagiaireDto: StagiaireDto) => {
+            const stagiaire: Stagiaire = new Stagiaire();
+            stagiaire.setId(stagiaireDto.id!);
+            stagiaire.setLastName(stagiaireDto.lastname);
+            stagiaire.setFirstName(stagiaireDto.firstname);
+            stagiaire.setBirthDate(new Date(stagiaireDto.birthdate));
+            stagiaire.setPhoneNumber(stagiaireDto.phoneNumber);
+            stagiaire.setEmail(stagiaireDto.email);
+            return stagiaire;
+          })
+          );
   }
 
-  public delete(stagiaire: Stagiaire): void {
-    console.log('delete stagiaire asked: '
-        + stagiaire.getLastName()
-        + '(' + stagiaire.getId() +')')
+  public delete(stagiaire: Stagiaire): Observable<HttpResponse<any>> {
     // 1. call backend
-    this.httpClient.delete(
-      `${this.controllerBaseUrl}/${stagiaire.getId()}`
-      )
-      .subscribe(
-        _ => {
-          // remote remove is done
-          console.log('delete stagiaire in remote api done: '
-            + stagiaire.getLastName()
-            + '(' + stagiaire.getId() +')')
-          // 2. adapt local list
-          const stagiaireIndex: number = this.stagiaires.findIndex(
-            (obj: Stagiaire) => obj.getId() === stagiaire.getId()
-          );
-          this.stagiaires.splice(stagiaireIndex,1);
-        }
-      )
-
+    return this.httpClient.delete(
+      `${this.controllerBaseUrl}/${stagiaire.getId()}`,
+      {
+        observe: 'response'
+      }
+    );
   }
 
   public getVisibleStagiaireNumber(date: Date | null): number {
