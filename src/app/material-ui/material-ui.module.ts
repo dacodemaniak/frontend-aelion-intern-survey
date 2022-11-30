@@ -7,14 +7,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 @NgModule({
   declarations: [],
   imports: [
     CommonModule
   ],
   exports: [
-    ... MaterialUiModule.materialModules // ... SPREAD OPERATOR 
+    ... MaterialUiModule.materialModules // ... SPREAD OPERATOR
   ]
 })
 export class MaterialUiModule {
@@ -23,6 +23,7 @@ export class MaterialUiModule {
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatSnackBarModule
   ]
 }
