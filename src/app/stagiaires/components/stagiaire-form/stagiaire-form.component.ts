@@ -39,6 +39,9 @@ export class StagiaireFormComponent implements OnInit {
     console.log("Delegate add stagiaire:", this.stagiaireForm.value)
     const dto: StagiaireDto = new StagiaireDto(this.stagiaireForm.value)
     this.stagiaireService.add(dto)
+      .subscribe(() => {
+        this.goHome();
+      })
   }
 
   public goHome(): void {
