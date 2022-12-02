@@ -1,68 +1,69 @@
-<form [formGroup]="stagiaireForm" (ngSubmit)="onSubmit()">
-    <div>
-        <mat-form-field>
-            <input
-                matInput
-                placeholder="Nom du stagiaire..."
-                id="lastName"
-                formControlName="lastname"
-            >
-            <mat-error *ngIf="c['lastname'].errors && c['lastname'].touched">
-                Le nom du stagiaire est obligatoire !
-            </mat-error>
-        </mat-form-field>
-    </div>
-
-    <div>
-        <mat-form-field>
-            <input id="firstName" placeholder="Prénom du stagiaire..." matInput formControlName="firstname">
-            <mat-error *ngIf="c['firstname'].errors && c['firstname'].touched">
-                Le prénom du stagiaire est obligatoire !
-            </mat-error>
-        </mat-form-field>
-    </div>
-
-    <div>
-        <mat-form-field>
-            <input matInput placeholder="Email du stagiaire..." id="email" type="email" formControlName="email">
-            <mat-error *ngIf="c['email'].errors && c['email'].touched">
-                <span *ngIf="c['email'].hasError('required')">
-                    L'email est obligatoire
-                </span>
-                <span *ngIf="c['email'].hasError('email')">
-                    L'adresse saisie n'est pas une adresse valide...
-                </span>
-            </mat-error>
-        </mat-form-field>
-    </div>
-
-    <div>
-        <mat-form-field>
-            <input matInput placeholder="Numéro de téléphone..." id="phoneNumber" type="text" formControlName="phoneNumber">
-            <mat-error *ngIf="c['phoneNumber'].errors && c['phoneNumber'].touched">
-                <span *ngIf="c['phoneNumber'].hasError('required')">
-                    Le numéro de téléphone est obligatoire
-                </span>
-                <span *ngIf="c['phoneNumber'].hasError('pattern')">
-                    Le numéro saisi n'est pas conforme
-                </span>
-            </mat-error>
-        </mat-form-field>
-    </div>
-
-    <div>
-        <mat-form-field appearance="fill">
-            <mat-label>Birthdate</mat-label>
-            <input matInput [matDatepicker]="dp" formControlName="birthdate">
-            <mat-hint>JJ-MM-YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
-            <mat-datepicker #dp></mat-datepicker>
+<ng-container *ngIf="stagiaireForm">
+  <form [formGroup]="stagiaireForm" (ngSubmit)="onSubmit()">
+      <div>
+          <mat-form-field>
+              <input
+                  matInput
+                  placeholder="Nom du stagiaire..."
+                  id="lastName"
+                  formControlName="lastname"
+              >
+              <mat-error *ngIf="c['lastname'].errors && c['lastname'].touched">
+                  Le nom du stagiaire est obligatoire !
+              </mat-error>
           </mat-form-field>
-    </div>
+      </div>
 
-    <div>
-        <button mat-raised-button color="primary" [disabled]="!stagiaireForm.valid">Ajouter stagiaire</button>
-        <button mat-raised-button color="danger" type="button" (click)="goHome()">Liste</button>
-    </div>
-</form>
+      <div>
+          <mat-form-field>
+              <input id="firstName" placeholder="Prénom du stagiaire..." matInput formControlName="firstname">
+              <mat-error *ngIf="c['firstname'].errors && c['firstname'].touched">
+                  Le prénom du stagiaire est obligatoire !
+              </mat-error>
+          </mat-form-field>
+      </div>
 
+      <div>
+          <mat-form-field>
+              <input matInput placeholder="Email du stagiaire..." id="email" type="email" formControlName="email">
+              <mat-error *ngIf="c['email'].errors && c['email'].touched">
+                  <span *ngIf="c['email'].hasError('required')">
+                      L'email est obligatoire
+                  </span>
+                  <span *ngIf="c['email'].hasError('email')">
+                      L'adresse saisie n'est pas une adresse valide...
+                  </span>
+              </mat-error>
+          </mat-form-field>
+      </div>
+
+      <div>
+          <mat-form-field>
+              <input matInput placeholder="Numéro de téléphone..." id="phoneNumber" type="text" formControlName="phoneNumber">
+              <mat-error *ngIf="c['phoneNumber'].errors && c['phoneNumber'].touched">
+                  <span *ngIf="c['phoneNumber'].hasError('required')">
+                      Le numéro de téléphone est obligatoire
+                  </span>
+                  <span *ngIf="c['phoneNumber'].hasError('pattern')">
+                      Le numéro saisi n'est pas conforme
+                  </span>
+              </mat-error>
+          </mat-form-field>
+      </div>
+
+      <div>
+          <mat-form-field appearance="fill">
+              <mat-label>Birthdate</mat-label>
+              <input matInput [matDatepicker]="dp" formControlName="birthdate">
+              <mat-hint>JJ-MM-YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+              <mat-datepicker #dp></mat-datepicker>
+            </mat-form-field>
+      </div>
+
+      <div>
+          <button mat-raised-button color="primary" [disabled]="!stagiaireForm.valid">{{ addMode ? 'Ajouter' : 'Modifier' }}</button>
+          <button mat-raised-button color="danger" type="button" (click)="goHome()">Liste</button>
+      </div>
+  </form>
+</ng-container>
