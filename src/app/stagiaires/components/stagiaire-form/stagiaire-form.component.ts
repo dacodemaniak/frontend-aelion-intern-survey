@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
 import { Stagiaire } from 'src/app/core/models/stagiaire';
 import { StagiaireService } from 'src/app/core/services/stagiaire.service';
 import { StagiaireDto } from '../../dto/stagiaire-dto';
@@ -16,14 +17,31 @@ export class StagiaireFormComponent implements OnInit {
 
   stagiaireForm!: FormGroup;
 
+  public addMode: boolean = true;
+
   constructor(
     private stagiaireService: StagiaireService,
     private formBuilderService: FormBuilderService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.stagiaireForm = this.formBuilderService.build().getForm();
+    this.route.url
+      .subscribe((url: UrlSegment[]) => {
+        // Est ce que je suis en mode Update ou Add
+        if (url.filter((urlSegment: UrlSegment) => urlSegment.path === 'update').length) {
+          this.addMode = false;
+          this.stagiaireService.findOne(+url[url.length - 1].path)
+            .subscribe((stagiaire: Stagiaire) => {
+              console.log(`Got ${stagiaire.getId()} ready to update`);
+              this.stagiaireForm = this.formBuilderService.build(stagiaire).getForm();
+            })
+        } else {
+          this.stagiaireForm = this.formBuilderService.build().getForm();
+        }
+      });
+
   }
 
   /**
@@ -38,10 +56,18 @@ export class StagiaireFormComponent implements OnInit {
   onSubmit() {
     console.log("Delegate add stagiaire:", this.stagiaireForm.value)
     const dto: StagiaireDto = new StagiaireDto(this.stagiaireForm.value)
-    this.stagiaireService.add(dto)
-      .subscribe(() => {
-        this.goHome();
-      })
+
+    let subscription: Observable<any>;
+
+    if (this.addMode) {
+      subscription = this.stagiaireService.add(dto)
+    } else {
+      // Invoke service update method
+      subscription = this.stagiaireService.update(
+        dto
+      )
+    }
+    subscription.subscribe(() => this.goHome())
   }
 
   public goHome(): void {
