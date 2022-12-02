@@ -1,3 +1,5 @@
+import { Stagiaire } from './../../core/models/stagiaire';
+
 export class StagiaireDto {
     public id?: number;
     public lastname: string = '';
@@ -17,5 +19,18 @@ export class StagiaireDto {
          *  birthDate: null
          * }
          */
+    }
+
+    public toStagiaire(): Stagiaire {
+      const stagiaire: Stagiaire = new Stagiaire();
+      if (this.id !== undefined)
+        stagiaire.setId(this.id);
+      stagiaire.setLastName(this.lastname);
+      stagiaire.setFirstName(this.firstname);
+      stagiaire.setPhoneNumber(this.phoneNumber);
+      stagiaire.setBirthDate(this.birthdate);
+      stagiaire.setEmail(this.email);
+
+      return stagiaire;
     }
 }
