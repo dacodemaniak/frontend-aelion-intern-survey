@@ -30,6 +30,10 @@ export class AppRoutingModule {
       component: StagiaireDetailComponent
     },
     {
+      path: 'stagiaire/update/:id',
+      component: StagiaireFormComponent
+    },
+    {
       path: '**', // Wild card
       redirectTo: 'home',
       pathMatch: 'full'
