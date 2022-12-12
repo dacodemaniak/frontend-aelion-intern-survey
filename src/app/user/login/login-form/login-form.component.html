@@ -1,1 +1,26 @@
-<p>login-form works!</p>
+<form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+    <div class="field-control">
+        <mat-form-field>
+            <input matInput formControlName="userLogin" placeholder="Your login...">
+            <mat-error *ngIf="loginForm.get('userLogin')!.errors && loginForm.get('userLogin')!.touched">
+                Your login is required
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+    <div class="field-control">
+        <mat-form-field>
+            <input matInput formControlName="userPassword" placeholder="Your password..." type="password">
+            <mat-error *ngIf="loginForm.get('userPassword')!.errors && loginForm.get('userPassword')!.touched">
+                Your password is required
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+    <div class="field-control">
+        <mat-slide-toggle formControlName="stayConnected"></mat-slide-toggle> Stay connected
+    </div>
+    <div class="button">
+        <button mat-raised-button color="primary" [disabled]="loginForm.invalid">Login</button>
+    </div>
+</form>
