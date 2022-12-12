@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
@@ -12,7 +12,7 @@ import { FormBuilderService } from '../../services/form-builder.service';
   templateUrl: './stagiaire-form.component.html',
   styleUrls: ['./stagiaire-form.component.scss']
 })
-export class StagiaireFormComponent implements OnInit {
+export class StagiaireFormComponent implements OnInit, OnDestroy {
   // stagiaire: Stagiaire = new Stagiaire()
 
   stagiaireForm!: FormGroup;
@@ -27,23 +27,24 @@ export class StagiaireFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.url
-      .subscribe((url: UrlSegment[]) => {
-        // Est ce que je suis en mode Update ou Add
-        if (url.filter((urlSegment: UrlSegment) => urlSegment.path === 'update').length) {
-          this.addMode = false;
-          this.stagiaireService.findOne(+url[url.length - 1].path)
-            .subscribe((stagiaire: Stagiaire) => {
-              console.log(`Got ${stagiaire.getId()} ready to update`);
-              this.stagiaireForm = this.formBuilderService.build(stagiaire).getForm();
-            })
-        } else {
-          this.stagiaireForm = this.formBuilderService.build().getForm();
-        }
-      });
+    const data: any = this.route.snapshot.data;
+    console.log(`${data.form instanceof FormGroup ? 'OK' : 'KO'}`)
+
+    this.stagiaireForm = data.form;
+
+
+    if (this.stagiaireForm.value.id !== 0) {
+      this.addMode =  false;
+    } else {
+      this.addMode = true;
+    }
 
   }
 
+  ngOnDestroy(): void {
+    console.log(`Component dies`);
+      this.addMode = true;
+  }
   /**
    * Returns a list of form controls
    * @usage In template : c['lastname']

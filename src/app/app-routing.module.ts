@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { StagiaireFormComponent } from './stagiaires/components/stagiaire-form/stagiaire-form.component';
 import { StagiaireTableComponent } from './stagiaires/components/stagiaire-table/stagiaire-table.component';
+import { StagiaireResolver } from './stagiaires/resolvers/stagiaire.resolver';
 import { StagiaireDetailComponent } from './stagiaires/stagiaire-detail/stagiaire-detail.component';
 
 @NgModule({
@@ -23,7 +24,8 @@ export class AppRoutingModule {
     },
     {
       path:'stagiaire/add',
-      component: StagiaireFormComponent
+      component: StagiaireFormComponent,
+      resolve: {form: StagiaireResolver}
     },
     {
       path: 'stagiaire/:id',
@@ -31,7 +33,8 @@ export class AppRoutingModule {
     },
     {
       path: 'stagiaire/update/:id',
-      component: StagiaireFormComponent
+      component: StagiaireFormComponent,
+      resolve: {form: StagiaireResolver}
     },
     {
       path: '**', // Wild card

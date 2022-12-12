@@ -27,7 +27,7 @@ export class FormBuilderService {
 
   public build(...args: Stagiaire[]): FormBuilderService {
     if (args.length) {
-      this.stagiaire = Object.assign(this.stagiaire, args[0]);
+      this.stagiaire = Object.assign(new Stagiaire(), args[0]);
       this.updateMode = true;
     } else
       this.stagiaire = new Stagiaire();
