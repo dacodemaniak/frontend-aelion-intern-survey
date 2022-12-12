@@ -1,45 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Stagiaire } from './core/models/stagiaire';
 import { StagiaireService } from './core/services/stagiaire.service';
+import { UserService } from './user/services/user.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   public title = 'Suivi des stagaires';
-
-  public stagiaires: Array<Stagiaire> = this.stagiaireService.getStagiaires();
-
-  public inputType: string = 'password';
-  public abbrHTML: string = 'Hyper Text Markup Language';
   
+  public hasUser: boolean = false;
+
   public constructor(
-    private stagiaireService: StagiaireService
+    private userService: UserService
   ) {}
 
-  public toggleTitle(): void {
-    if (this.title === 'Suivi des stagiaires') {
-      this.title = 'Hello Angular';
-    } else {
-      this.title = 'Suivi des stagiaires';
-    }
+  ngOnInit(): void {
+      this.userService.hasUser()
+        .subscribe((hasUser: boolean) => {
+          this.hasUser = hasUser;
+        })
   }
 
-  public showPassword(): void {
-    if (this.inputType === 'password') {
-      this.inputType = 'text';
-      setTimeout(
-        () => {
-          this.inputType = 'password'
-        },
-        800
-      )
-    } else {
-      this.inputType = 'password';
-    }
+  public onLogout(): void {
+    this.userService.logout();
   }
-
-  public addStagiaire(): void {}
 }

@@ -1,6 +1,24 @@
-<h1 (click)="toggleTitle()">
-  {{ title }}
-</h1>
+<mat-toolbar color="primary">
+  <button mat-icon-button class="example-icon" [matMenuTriggerFor]="menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item
+      [routerLink]="['/', 'home']"
+    >Trainee's list</button>
+    <button mat-menu-item>POE's list</button>
+  </mat-menu>
+
+  <span>{{ title }}</span>
+  <span class="example-spacer"></span>
+  <button mat-icon-button class="example-icon" *ngIf="!hasUser" [routerLink]="['/', 'login']">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+  <button mat-icon-button class="example-icon" *ngIf="hasUser" (click)="onLogout()">
+    <mat-icon>person_off</mat-icon>
+  </button>
+</mat-toolbar>
 
 <!-- Etagère à routes : c'est là qu'Angular charge les composants routés-->
 <router-outlet></router-outlet>
