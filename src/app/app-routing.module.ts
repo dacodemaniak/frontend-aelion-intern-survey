@@ -15,7 +15,7 @@ export class AppRoutingModule {
   public static routes: Routes = [
     {
       path: '',
-      redirectTo: 'home', // Redirige vers un autre chemin ici 'home'
+      redirectTo: 'login', // Redirige vers un autre chemin ici 'home'
       pathMatch: 'full'
       // home/1
       // home
