@@ -65,36 +65,37 @@ export class UserService {
   public logout(): void {
     this._user = null;
     this.router.navigate(['/', 'login']);
+    let storage: IStorageStrategy;
+
+    storage = new LocalStrategy();
+    storage.removeItem('auth');
+
+    storage = new SessionStrategy();
+    storage.removeItem('auth');
+
     this.hasUser$.next(false);
   }
 
   public hasUser(): BehaviorSubject<boolean> {
     if(!this._user) {
-      let storedItem: string | null;
-      let storedUser: any;
-      // Check for storages
-      let storage: IStorageStrategy = new LocalStrategy();
-      storedItem = storage.getItem('auth');
-      if (storedItem !== null) {
-        storedUser = JSON.parse(storedItem);
-        this._user = new User();
-        this._user.id = storedUser._id;
-        this._user.login = storedUser._login;
-
-        this.hasUser$.next(true);
-      } else {
-        let storage: IStorageStrategy = new SessionStrategy();
-        storedItem = storage.getItem('auth');
-        if (storedItem !== null) {
-          storedUser = JSON.parse(storedItem);
-          this._user = new User();
-          this._user.id = storedUser._id;
-          this._user.login = storedUser._login;
-
-          this.hasUser$.next(true);
-        }
-      }
+      this._readStorage(new LocalStrategy());
+      this._readStorage(new SessionStrategy());
     }
     return this.hasUser$;
+  }
+
+  private _readStorage(storage: IStorageStrategy): void {
+    const storedItem: string | null = storage.getItem('auth');
+
+    if (storedItem !== null) {
+
+      const storedUser = JSON.parse(storedItem);
+
+      this._user = new User();
+      this._user.id = storedUser._id;
+      this._user.login = storedUser._login;
+
+      this.hasUser$.next(true);
+    }
   }
 }
