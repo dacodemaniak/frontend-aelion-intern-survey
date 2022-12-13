@@ -4,8 +4,10 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://localhost:3000/api'
-  // apiBaseUrl: 'http://localhost:3000'
+  apiBaseUrl: 'http://localhost:3000/api',
+  storageKeys: {
+    'AUTH': 'auth'
+  }
 };
 
 /*
