@@ -65,13 +65,9 @@ export class UserService {
   public logout(): void {
     this._user = null;
     this.router.navigate(['/', 'login']);
-    let storage: IStorageStrategy;
 
-    storage = new LocalStrategy();
-    storage.removeItem('auth');
-
-    storage = new SessionStrategy();
-    storage.removeItem('auth');
+    this._removeItem(new LocalStrategy());
+    this._removeItem(new SessionStrategy());
 
     this.hasUser$.next(false);
   }
@@ -97,5 +93,9 @@ export class UserService {
 
       this.hasUser$.next(true);
     }
+  }
+
+  private _removeItem(storage: IStorageStrategy): void {
+    storage.removeItem('auth');
   }
 }
