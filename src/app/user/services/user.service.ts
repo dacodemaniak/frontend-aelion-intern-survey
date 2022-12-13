@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
+import { IStorageStrategy } from 'src/app/core/strategies/storage/i-storage-strategy';
+import { LocalStrategy } from 'src/app/core/strategies/storage/local-strategy';
+import { SessionStrategy } from 'src/app/core/strategies/storage/session-strategy';
 import { UserDto } from '../dto/user-dto';
 import { User } from '../models/user';
 
@@ -26,6 +29,8 @@ export class UserService {
   private _user: User | null = null;
   public hasUser$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
+  private _storageStrategy!: IStorageStrategy;
+
   constructor(
     private router: Router
   ) { }
@@ -42,7 +47,18 @@ export class UserService {
     this._user.id = users[userIndex].id!;
     this._user.login = users[userIndex].login;
 
+    // Get the strategy to use to store
+    if (formData.stayConnected) {
+      this._storageStrategy = new LocalStrategy();
+    } else {
+      this._storageStrategy = new SessionStrategy();
+    }
+
+    // Store the User object locally
+    this._storageStrategy.storeItem('auth', JSON.stringify(this._user));
+
     this.hasUser$.next(true);
+
     return of(true);
   }
 
@@ -53,6 +69,32 @@ export class UserService {
   }
 
   public hasUser(): BehaviorSubject<boolean> {
+    if(!this._user) {
+      let storedItem: string | null;
+      let storedUser: any;
+      // Check for storages
+      let storage: IStorageStrategy = new LocalStrategy();
+      storedItem = storage.getItem('auth');
+      if (storedItem !== null) {
+        storedUser = JSON.parse(storedItem);
+        this._user = new User();
+        this._user.id = storedUser._id;
+        this._user.login = storedUser._login;
+
+        this.hasUser$.next(true);
+      } else {
+        let storage: IStorageStrategy = new SessionStrategy();
+        storedItem = storage.getItem('auth');
+        if (storedItem !== null) {
+          storedUser = JSON.parse(storedItem);
+          this._user = new User();
+          this._user.id = storedUser._id;
+          this._user.login = storedUser._login;
+
+          this.hasUser$.next(true);
+        }
+      }
+    }
     return this.hasUser$;
   }
 }
