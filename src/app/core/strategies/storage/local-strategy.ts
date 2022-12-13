@@ -1,5 +1,4 @@
 import { IStorageStrategy } from "./i-storage-strategy";
-
 export class LocalStrategy implements IStorageStrategy {
   getItem(key: string) {
     return localStorage.getItem(key);

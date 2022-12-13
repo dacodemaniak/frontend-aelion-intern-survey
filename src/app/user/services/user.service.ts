@@ -6,7 +6,7 @@ import { LocalStrategy } from 'src/app/core/strategies/storage/local-strategy';
 import { SessionStrategy } from 'src/app/core/strategies/storage/session-strategy';
 import { UserDto } from '../dto/user-dto';
 import { User } from '../models/user';
-
+import { environment } from './../../../environments/environment';
 // @todo remove after wiring to backend
 const users: UserDto[] = [
   {
@@ -55,7 +55,7 @@ export class UserService {
     }
 
     // Store the User object locally
-    this._storageStrategy.storeItem('auth', JSON.stringify(this._user));
+    this._storageStrategy.storeItem(`${environment.storageKeys.AUTH}`, JSON.stringify(this._user));
 
     this.hasUser$.next(true);
 
@@ -81,7 +81,7 @@ export class UserService {
   }
 
   private _readStorage(storage: IStorageStrategy): void {
-    const storedItem: string | null = storage.getItem('auth');
+    const storedItem: string | null = storage.getItem(`${environment.storageKeys.AUTH}`);
 
     if (storedItem !== null) {
 
@@ -96,6 +96,6 @@ export class UserService {
   }
 
   private _removeItem(storage: IStorageStrategy): void {
-    storage.removeItem('auth');
+    storage.removeItem(`${environment.storageKeys.AUTH}`);
   }
 }
