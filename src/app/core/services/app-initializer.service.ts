@@ -12,7 +12,7 @@ export class AppInitializerService {
 
   public init(): Promise<void> {
     return new Promise<any>((resolve: any) => {
-      const hasUser$ = this._userService.hasUser();
+      this._userService.hasUser();
       resolve();
     })
   }
