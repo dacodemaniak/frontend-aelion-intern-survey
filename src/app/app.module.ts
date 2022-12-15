@@ -14,6 +14,7 @@ import { StagiaireFormComponent } from './stagiaires/components/stagiaire-form/s
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './user/user.module';
+import { userInterceptor } from './core/services/user-interceptor.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +32,9 @@ import { UserModule } from './user/user.module';
     SharedModule,
     UserModule
   ],
-  providers: [],
+  providers: [
+    userInterceptor
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

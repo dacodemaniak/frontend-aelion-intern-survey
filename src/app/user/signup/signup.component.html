@@ -1,0 +1,31 @@
+<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+    <div class="form-field">
+        <mat-form-field>
+            <input matInput formControlName="login" placeholder="Type a login name">
+            <mat-error *ngIf="c['login'].errors">
+
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+    <div class="form-field">
+        <mat-form-field>
+            <input matInput formControlName="password" type="password" placeholder="Type a password">
+            <mat-error *ngIf="c['password'].errors">
+
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput formControlName="confirmPassword" type="password" placeholder="Re type the password">
+            <mat-error *ngIf="c['confirmPassword'].errors">
+
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+    <div class="form-field">
+        <button mat-raised-button color="primary" [disabled]="signupForm.invalid">
+            Create your account
+        </button>
+    </div>
+</form>

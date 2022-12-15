@@ -7,6 +7,7 @@ import { StagiaireDetailComponent } from './stagiaires/stagiaire-detail/stagiair
 import { HasUserGuard } from './user/guards/has-user.guard';
 import { NoUserGuard } from './user/guards/no-user.guard';
 import { LoginFormComponent } from './user/login/login-form/login-form.component';
+import { SignupComponent } from './user/signup/signup.component';
 
 @NgModule({
   imports: [RouterModule.forRoot(AppRoutingModule.routes)],
@@ -31,6 +32,13 @@ export class AppRoutingModule {
     {
       path: 'login',
       component: LoginFormComponent,
+      canActivate: [
+        NoUserGuard
+      ]
+    },
+    {
+      path: 'signup',
+      component: SignupComponent,
       canActivate: [
         NoUserGuard
       ]

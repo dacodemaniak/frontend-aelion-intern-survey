@@ -1,9 +1,12 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of  } from 'rxjs';
+import { take, catchError, map } from 'rxjs/operators';
 import { IStorageStrategy } from 'src/app/core/strategies/storage/i-storage-strategy';
 import { LocalStrategy } from 'src/app/core/strategies/storage/local-strategy';
 import { SessionStrategy } from 'src/app/core/strategies/storage/session-strategy';
+import { SignupDto } from '../dto/signup-dto';
 import { UserDto } from '../dto/user-dto';
 import { User } from '../models/user';
 import { environment } from './../../../environments/environment';
@@ -32,34 +35,37 @@ export class UserService {
   private _storageStrategy!: IStorageStrategy;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private httpClient: HttpClient
   ) { }
 
   public login(formData: any): Observable<boolean> {
-    const userIndex: number = users.findIndex((user: UserDto) => user.login === formData.userLogin && user.password === formData.userPassword)
-    if (userIndex === -1) {
-      this.hasUser$.next(false); // Notify subscribers of a new value
-      return of(false);
-    }
+    return this.httpClient.post<any>(
+      `${environment.apiBaseUrl}/user/signin`,
+      formData
+    ).pipe(
+      take(1),
+      catchError((error: any) => of(false)),
+      map((response: any) => {
+        this._user = new User();
+        this._user.login = formData.login;
+        this._user.token = response.jwtToken;
+        this._user.setRoles(response.roles);
 
-    // Got a user
-    this._user = new User();
-    this._user.id = users[userIndex].id!;
-    this._user.login = users[userIndex].login;
+        // Get the strategy to use to store
+        if (formData.stayConnected) {
+          this._storageStrategy = new LocalStrategy();
+        } else {
+          this._storageStrategy = new SessionStrategy();
+        }
 
-    // Get the strategy to use to store
-    if (formData.stayConnected) {
-      this._storageStrategy = new LocalStrategy();
-    } else {
-      this._storageStrategy = new SessionStrategy();
-    }
+        // Store the User object locally
+        this._storageStrategy.storeItem(`${environment.storageKeys.AUTH}`, JSON.stringify(this._user));
 
-    // Store the User object locally
-    this._storageStrategy.storeItem(`${environment.storageKeys.AUTH}`, JSON.stringify(this._user));
-
-    this.hasUser$.next(true);
-
-    return of(true);
+        this.hasUser$.next(true);
+        return true;
+      })
+    )
   }
 
   public logout(): void {
@@ -80,6 +86,17 @@ export class UserService {
     return this.hasUser$;
   }
 
+  public signup(dto: SignupDto): Observable<any> {
+    return this.httpClient.post<any>(
+      `${environment.apiBaseUrl}/user/signup`,
+      dto
+    );
+  }
+
+  public get user(): User | null {
+    return this._user;
+  }
+
   private _readStorage(storage: IStorageStrategy): void {
     const storedItem: string | null = storage.getItem(`${environment.storageKeys.AUTH}`);
 
@@ -88,8 +105,8 @@ export class UserService {
       const storedUser = JSON.parse(storedItem);
 
       this._user = new User();
-      this._user.id = storedUser._id;
-      this._user.login = storedUser._login;
+      this._user.token = storedUser._token;
+      this._user.setRoles(storedUser.roles);
 
       this.hasUser$.next(true);
     }
