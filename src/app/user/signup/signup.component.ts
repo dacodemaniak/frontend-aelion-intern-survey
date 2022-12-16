@@ -5,6 +5,9 @@ import { take } from 'rxjs';
 import { SignupDto } from '../dto/signup-dto';
 import { UserService } from '../services/user.service';
 
+/**
+ * My comment to push it
+ */
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
